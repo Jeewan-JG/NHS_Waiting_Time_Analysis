@@ -283,99 +283,47 @@
       </table>
     </section>
 
-    <section class="card" id="data-cleaning">
-      <h2>Data Cleaning in Python</h2>
-      <p>
-        Python was used to prepare the data for analysis and Tableau visualisation.
-        The cleaning step focused on making the dataset analysis-ready and creating useful business metrics.
-      </p>
-      <p>This step:</p>
-      <ul>
-        <li>cleaned column names</li>
-        <li>converted the date field properly</li>
-        <li>handled missing numeric values</li>
-        <li>created a combined 52+ week waiting metric</li>
-        <li>prepared monthly and provider-level summary tables</li>
-      </ul>
+   <section class="card" id="data-cleaning">
+  <h2>Data Cleaning in Python</h2>
+  <p>
+    Python was used to combine multiple monthly NHS files, clean the raw dataset,
+    handle duplicates and missing values, convert numeric fields, and create the
+    key 52+ week waiting metric used throughout the dashboard.
+  </p>
 
-      <h3>Load and clean the dataset</h3>
-      <pre><code>import pandas as pd
-import numpy as np
+  <h3>1. Load a single file and inspect the raw structure</h3>
+  <pre><code>import pandas as pd
 
-df = pd.read_csv("final_nhs_analysis.csv")
+file_path = "/Users/jeewangurung/Downloads/NHS_case_study/20250331-RTT-March-2025-full-extract-revised.csv"
+df = pd.read_csv(file_path)
 
-clean_df = df.copy()
-clean_df.columns = [col.strip() for col in clean_df.columns]
-clean_df["Period Date"] = pd.to_datetime(clean_df["Period Date"], errors="coerce")
+df.head()
+df.shape
+df.columns</code></pre>
 
-numeric_cols = clean_df.select_dtypes(include=["number"]).columns
-clean_df[numeric_cols] = clean_df[numeric_cols].fillna(0)</code></pre>
+  <h3>2. Combine all monthly CSV files into one dataset</h3>
+  <pre><code>import os
 
-      <h3>Create the combined 52+ week metric</h3>
-      <pre><code>gt_52_cols = [
-    col for col in clean_df.columns
-    if col.startswith("Gt ") and "Weeks SUM 1" in col
-]
+folder = "/Users/jeewangurung/Downloads/NHS_case_study"
 
-clean_df["wait_52_plus"] = clean_df[gt_52_cols].sum(axis=1)
-clean_df["total_patients"] = clean_df["Total Patients"]</code></pre>
-    </section>
+all_files = [os.path.join(folder, f) for f in os.listdir(folder) if f.endswith(".csv")]
+df_list = [pd.read_csv(file) for file in all_files]
 
-    <section class="card" id="python-analysis">
-      <h2>Python Analysis</h2>
+combined_df = pd.concat(df_list, ignore_index=True)
 
-      <h3>KPI calculations</h3>
-      <p>This code calculates the main KPIs used in the dashboard.</p>
-      <pre><code>total_patients_kpi = clean_df["total_patients"].sum()
-wait_52_plus_kpi = clean_df["wait_52_plus"].sum()
-wait_ratio_kpi = wait_52_plus_kpi / total_patients_kpi
+combined_df.shape
+combined_df.to_csv("/Users/jeewangurung/Downloads/nhs_combined_4months.csv", index=False)</code></pre>
 
-print("Total Patients:", f"{total_patients_kpi:,.0f}")
-print("Patients Waiting 52+ Weeks:", f"{wait_52_plus_kpi:,.0f}")
-print("Wait Ratio:", f"{wait_ratio_kpi:.2%}")</code></pre>
+  <h3>3. Create a safe working copy and remove duplicates</h3>
+  <pre><code>clean_df = combined_df.copy()
 
-      <h3>Monthly trend analysis</h3>
-      <pre><code>monthly_trend = (
-    clean_df.groupby(clean_df["Period Date"].dt.to_period("M"))
-    .agg(
-        total_patients=("total_patients", "sum"),
-        wait_52_plus=("wait_52_plus", "sum")
-    )
-    .reset_index()
-)
+clean_df.duplicated().sum()
+clean_df = clean_df.drop_duplicates()</code></pre>
 
-monthly_trend["wait_ratio"] = (
-    monthly_trend["wait_52_plus"] / monthly_trend["total_patients"]
-)
+  <h3>4. Check missing values and convert numeric columns</h3>
+  <pre><code>clean_df.isna().sum().sort_values(ascending=False).head(15)
 
-monthly_trend["Period Date"] = monthly_trend["Period Date"].astype(str)</code></pre>
-
-      <h3>Provider-level summary</h3>
-      <pre><code>provider_summary = (
-    clean_df.groupby("Provider")
-    .agg(
-        total_patients=("total_patients", "sum"),
-        wait_52_plus=("wait_52_plus", "sum")
-    )
-    .reset_index()
-)
-
-provider_summary["wait_ratio"] = (
-    provider_summary["wait_52_plus"] / provider_summary["total_patients"]
-)
-
-top_10_by_patients = provider_summary.nlargest(10, "total_patients")
-top_10_by_wait_ratio = provider_summary.nlargest(10, "wait_ratio")</code></pre>
-
-      <h3>Month-over-month change</h3>
-      <pre><code>monthly_trend["mom_change_wait_52_plus"] = (
-    monthly_trend["wait_52_plus"].pct_change()
-)
-
-monthly_trend["mom_change_wait_ratio"] = (
-    monthly_trend["wait_ratio"].pct_change()
-)</code></pre>
-    </section>
+numeric_cols = [col for col in clean_df.columns if "SUM" in col or col == "Total"]
 
     <section class="card" id="key-insights">
       <h2>📊 Key Insights</h2>
