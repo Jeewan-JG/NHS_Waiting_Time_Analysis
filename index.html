@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NHS Waiting Times Analysis</title>
+
   <style>
     :root{
       --primary:#159957;
@@ -66,34 +67,10 @@
       margin-top:0;
     }
 
-    h3{
-      color:#1f2937;
-      margin-top:28px;
-      margin-bottom:10px;
-    }
-
-    p{margin:0 0 16px;}
-    ul{padding-left:22px;}
-    li{margin-bottom:8px;}
-
-    .toc ol{
-      padding-left:32px;
-      margin:0;
-    }
-
-    .toc li{
-      margin-bottom:10px;
-      font-size:1.05rem;
-    }
-
     .toc a{
       color:var(--link);
       text-decoration:underline;
       font-weight:600;
-    }
-
-    .toc a:hover{
-      opacity:0.85;
     }
 
     img{
@@ -111,7 +88,6 @@
       padding-bottom:70%;
       border-radius:10px;
       overflow:hidden;
-      background:#f0f0f0;
     }
 
     .dashboard-wrap iframe{
@@ -122,332 +98,94 @@
       border:none;
     }
 
-    pre{
-      background:var(--code-bg);
-      color:var(--code-text);
-      padding:18px;
-      border-radius:10px;
-      overflow-x:auto;
-      font-size:0.95rem;
-      line-height:1.5;
-      margin:14px 0 22px;
-    }
-
-    code{
-      font-family:Consolas, Monaco, monospace;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:10px;
-    }
-
-    th, td{
-      border:1px solid var(--border);
-      padding:12px;
-      text-align:left;
-      vertical-align:top;
-    }
-
-    th{
-      background:#f9fafb;
-    }
-
     .footer{
       text-align:center;
       color:var(--muted);
       font-size:0.95rem;
-      margin-top:8px;
-    }
-
-    @media (max-width: 768px){
-      .hero h1{font-size:2.1rem;}
-      .card{padding:22px;}
     }
   </style>
 </head>
+
 <body>
 
+  <!-- HERO -->
   <section class="hero">
-    <h1>Case Study: NHS Waiting Times Analysis</h1>
-    <p>Tools used: Python, Tableau, HTML/CSS, and GitHub Pages.</p>
+    <h1>NHS Waiting Times Analysis</h1>
+    <p>Volume, Delays & Provider Performance Analysis using Python & Tableau</p>
   </section>
 
   <div class="container">
 
-    <section class="card" id="overview">
+    <!-- PROFILE IMAGE -->
+    <img src="pp.png" alt="Profile / Project Image">
+
+    <!-- OVERVIEW -->
+    <section class="card">
       <h2>Project Overview</h2>
       <p>
         This project analyzes NHS waiting list data to understand the scale of long waiting times,
         identify the drivers of the 52+ week backlog, and compare provider performance.
-        The goal is to uncover actionable insights that can support capacity planning,
-        improve patient outcomes, and reduce long waiting times.
       </p>
-      <p>The analysis focuses on:</p>
+
       <ul>
         <li>Total patient volume and long-wait backlog</li>
-        <li>The percentage of patients waiting over 52 weeks</li>
+        <li>Percentage of patients waiting over 52 weeks</li>
         <li>Monthly changes in waiting performance</li>
         <li>Differences in provider performance</li>
-        <li>The relationship between patient volume and waiting times</li>
-        <li>The distribution of long waiting times across week bands</li>
+        <li>Relationship between volume and waiting times</li>
+        <li>Distribution of long waiting times</li>
       </ul>
     </section>
 
-    <section class="card toc" id="table-of-contents">
-      <h2>📑 Table of Contents</h2>
-      <ol>
-        <li><a href="#business-problem">Business Problem</a></li>
-        <li><a href="#dataset">Dataset</a></li>
-        <li><a href="#tools-used">Tools Used</a></li>
-        <li><a href="#data-pipeline">Data Pipeline</a></li>
-        <li><a href="#data-cleaning">Data Cleaning in Python</a></li>
-        <li><a href="#python-analysis">Python Analysis</a></li>
-        <li><a href="#key-insights">Key Insights</a></li>
-        <li><a href="#dashboard">Dashboard</a></li>
-        <li><a href="#recommendations">Business Recommendations</a></li>
-        <li><a href="#project-structure">Project Structure</a></li>
-      </ol>
-    </section>
+    <!-- DASHBOARD -->
+    <section class="card">
+      <h2>📊 Dashboard</h2>
 
-    <section class="card" id="business-problem">
-      <h2>Business Problem</h2>
       <p>
-        NHS providers are under pressure due to long patient waiting times, particularly for patients
-        waiting more than 52 weeks.
+        The analysis is visualized using Tableau dashboards combining KPIs, trends,
+        provider comparisons, and waiting time distributions.
       </p>
-      <p>This project aims to answer:</p>
+
       <ul>
-        <li>How severe is the 52+ week backlog?</li>
-        <li>Are waiting times improving or worsening over time?</li>
-        <li>Which providers have the highest patient volume?</li>
-        <li>Which providers have the worst 52+ week wait ratios?</li>
-        <li>Do higher patient volumes lead to longer waits?</li>
-      </ul>
-    </section>
-
-    <section class="card" id="dataset">
-      <h2>📂 Dataset</h2>
-      <p>The dataset contains NHS waiting list data including fields such as:</p>
-      <ul>
-        <li><code>Provider</code></li>
-        <li><code>Period Date</code></li>
-        <li><code>Total Patients</code></li>
-        <li><code>Wait 52 Plus</code></li>
-        <li><code>Wait Ratio KPI</code></li>
-        <li><code>Gt 52 To 53 Weeks SUM 1</code> through <code>Gt 99 To 100 Weeks SUM 1</code></li>
-        <li><code>MoM % Change Wait 52 Plus</code></li>
-      </ul>
-      <p>
-        The data was cleaned and transformed in Python before being visualised in Tableau.
-      </p>
-    </section>
-
-    <section class="card" id="tools-used">
-      <h2>Tools Used</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Tool</th>
-            <th>Purpose</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Python</td>
-            <td>Data cleaning, transformation, KPI calculations</td>
-          </tr>
-          <tr>
-            <td>Tableau</td>
-            <td>Dashboard development and data visualisation</td>
-          </tr>
-          <tr>
-            <td>GitHub Pages</td>
-            <td>Portfolio project publishing</td>
-          </tr>
-          <tr>
-            <td>HTML/CSS</td>
-            <td>Project webpage design</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section class="card" id="data-pipeline">
-      <h2>Data Pipeline</h2>
-      <p>This diagram shows the flow from raw NHS waiting list data to cleaned Python outputs and Tableau dashboard visualisation.</p>
-      <img src="data.png" alt="NHS Data Pipeline Diagram">
-    </section>
-
-    <section class="card" id="data-cleaning">
-      <h2>Data Cleaning in Python</h2>
-      <p>To prepare the dataset for analysis, Python was used to clean the data and create new business metrics.</p>
-      <p>This step:</p>
-      <ul>
-        <li>cleaned column names and date values</li>
-        <li>handled missing numeric values</li>
-        <li>created a combined 52+ week waiting metric</li>
-        <li>prepared provider-level and monthly trend tables</li>
-      </ul>
-
-      <h3>Load and Clean the Dataset</h3>
-      <pre><code>import pandas as pd
-import numpy as np
-
-df = pd.read_csv("final_nhs_analysis.csv")
-
-clean_df = df.copy()
-clean_df.columns = [col.strip() for col in clean_df.columns]
-clean_df["Period Date"] = pd.to_datetime(clean_df["Period Date"], errors="coerce")
-
-numeric_cols = clean_df.select_dtypes(include=["number"]).columns
-clean_df[numeric_cols] = clean_df[numeric_cols].fillna(0)</code></pre>
-
-      <h3>Create 52+ Week Waiting Metric</h3>
-      <pre><code>gt_52_cols = [
-    col for col in clean_df.columns
-    if col.startswith("Gt ") and "Weeks SUM 1" in col
-]
-
-clean_df["wait_52_plus"] = clean_df[gt_52_cols].sum(axis=1)
-clean_df["total_patients"] = clean_df["Total Patients"]</code></pre>
-    </section>
-
-    <section class="card" id="python-analysis">
-      <h2>Python Analysis</h2>
-
-      <h3>KPI Calculations</h3>
-      <p>This code calculates the headline KPIs used in the dashboard.</p>
-      <pre><code>total_patients_kpi = clean_df["total_patients"].sum()
-wait_52_plus_kpi = clean_df["wait_52_plus"].sum()
-wait_ratio_kpi = wait_52_plus_kpi / total_patients_kpi
-
-print("Total Patients:", f"{total_patients_kpi:,.0f}")
-print("Patients Waiting 52+ Weeks:", f"{wait_52_plus_kpi:,.0f}")
-print("Wait Ratio:", f"{wait_ratio_kpi:.2%}")</code></pre>
-
-      <h3>Monthly Trend Analysis</h3>
-      <pre><code>monthly_trend = (
-    clean_df.groupby(clean_df["Period Date"].dt.to_period("M"))
-    .agg(
-        total_patients=("total_patients", "sum"),
-        wait_52_plus=("wait_52_plus", "sum")
-    )
-    .reset_index()
-)
-
-monthly_trend["wait_ratio"] = (
-    monthly_trend["wait_52_plus"] / monthly_trend["total_patients"]
-)
-
-monthly_trend["Period Date"] = monthly_trend["Period Date"].astype(str)</code></pre>
-
-      <h3>Provider-Level Comparison</h3>
-      <pre><code>provider_summary = (
-    clean_df.groupby("Provider")
-    .agg(
-        total_patients=("total_patients", "sum"),
-        wait_52_plus=("wait_52_plus", "sum")
-    )
-    .reset_index()
-)
-
-provider_summary["wait_ratio"] = (
-    provider_summary["wait_52_plus"] / provider_summary["total_patients"]
-)
-
-top_10_by_patients = provider_summary.nlargest(10, "total_patients")
-top_10_by_wait_ratio = provider_summary.nlargest(10, "wait_ratio")</code></pre>
-
-      <h3>Month-over-Month Change</h3>
-      <pre><code>monthly_trend["mom_change_wait_52_plus"] = (
-    monthly_trend["wait_52_plus"].pct_change()
-)
-
-monthly_trend["mom_change_wait_ratio"] = (
-    monthly_trend["wait_ratio"].pct_change()
-)</code></pre>
-    </section>
-
-    <section class="card" id="key-insights">
-      <h2>📊 Key Insights</h2>
-      <p>Based on the Python analysis and Tableau dashboard, several important patterns were identified.</p>
-
-      <h3>1. Backlog Severity</h3>
-      <p>7.09% of patients (841,880) are waiting over 52 weeks, showing a significant backlog in the system.</p>
-
-      <h3>2. Capacity Pressure</h3>
-      <p>Higher patient volumes are linked to longer waiting times, indicating capacity pressure across providers.</p>
-
-      <h3>3. Provider Performance</h3>
-      <p>Performance varies significantly across providers, with some showing much higher wait ratios than others.</p>
-
-      <h3>4. Unstable Progress</h3>
-      <p>Waiting times are not yet stable, with recent increases after a short improvement period.</p>
-
-      <h3>5. Long-Tail Waiting Problem</h3>
-      <p>A small number of patients experience extremely long delays, highlighting a persistent long-tail backlog issue.</p>
-    </section>
-
-    <section class="card" id="dashboard">
-      <h2>📈 Dashboard</h2>
-      <p>
-        The final analysis was visualized in Tableau through a dashboard that combines KPIs, trends,
-        provider comparisons, scatter analysis, and waiting time distribution.
-      </p>
-      <p>The dashboard highlights:</p>
-      <ul>
-        <li>Total patients and 52+ week waiting KPIs</li>
-        <li>Total patient trend over time</li>
-        <li>52+ week waiting trend over time</li>
-        <li>Month-over-month change in 52+ week waiting</li>
-        <li>Top 10 providers by total patients</li>
-        <li>Top 10 providers by 52+ week wait ratio</li>
-        <li>Scatter plot showing volume vs waiting time relationship</li>
-        <li>Waiting time distribution across week bands</li>
-      </ul>
-
-      <h3>Dashboard Insights</h3>
-      <p>From the visualization:</p>
-      <ul>
-        <li>The backlog remains significant across the NHS</li>
-        <li>Higher volume providers tend to have longer waiting times</li>
-        <li>Some providers perform much worse than others</li>
-        <li>Recent monthly improvements have not been sustained</li>
+        <li>Total patients & 52+ week KPIs</li>
+        <li>Trend over time</li>
+        <li>Provider comparison</li>
+        <li>Volume vs waiting time relationship</li>
       </ul>
 
       <h3>Dashboard Preview</h3>
-      <img src="dd.png" alt="NHS Tableau Dashboard Preview">
+      <img src="NHS.png" alt="NHS Dashboard">
 
       <h3>Interactive Dashboard</h3>
-      <p>Explore the full interactive Tableau dashboard below:</p>
       <div class="dashboard-wrap">
         <iframe
-          src="https://public.tableau.com/views/YOUR_NHS_TABLEAU_DASHBOARD_LINK?:embed=y&:display_count=n&:showVizHome=n"
+          src="https://public.tableau.com/views/NHSWaitingListAnalysisDemandDelaysandCapacityPressure/NHSWaitingListPerformanceDashboard52WeekAnalysis?:language=en-GB&:display_count=n&:showVizHome=n"
           allowfullscreen>
         </iframe>
       </div>
     </section>
 
-    <section class="card" id="recommendations">
-      <h2>Business Recommendations</h2>
+    <!-- INSIGHTS -->
+    <section class="card">
+      <h2>📈 Key Insights</h2>
+
       <ul>
-        <li>Redistribute workload across providers to balance system capacity.</li>
-        <li>Target high wait-ratio providers for focused performance improvement.</li>
-        <li>Improve triaging and expand digital consultations to manage demand better.</li>
-        <li>Monitor waiting time trends regularly and respond quickly to increases.</li>
-        <li>Prioritise reduction of the 52+ week backlog.</li>
+        <li>Significant backlog across the NHS</li>
+        <li>Higher volume leads to longer waits</li>
+        <li>Large variation between providers</li>
+        <li>Recent improvements are unstable</li>
       </ul>
     </section>
 
-    <section class="card" id="project-structure">
-      <h2>Project Structure</h2>
+    <!-- RECOMMENDATIONS -->
+    <section class="card">
+      <h2>Business Recommendations</h2>
+
       <ul>
-        <li><strong>README.md</strong> – repository overview</li>
-        <li><strong>index.html</strong> – GitHub Pages portfolio webpage</li>
-        <li><strong>data.png</strong> – data pipeline image</li>
-        <li><strong>dd.png</strong> – dashboard preview image</li>
+        <li>Redistribute workload across providers</li>
+        <li>Focus on high wait-ratio providers</li>
+        <li>Improve triage and digital services</li>
+        <li>Prioritise 52+ week backlog reduction</li>
       </ul>
     </section>
 
