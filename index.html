@@ -323,7 +323,7 @@ clean_df = clean_df.drop_duplicates()</code></pre>
   <h3>4. Check missing values and convert numeric columns</h3>
   <pre><code>clean_df.isna().sum().sort_values(ascending=False).head(15)
 
-numeric_cols = [col for col in clean_df.columns if "SUM" in col or col == "Total"]
+numeric_cols = [col for col in clean_df.columns if "SUM" in col or col == "Total"]</code></pre>
 
     <section class="card" id="key-insights">
       <h2>📊 Key Insights</h2>
