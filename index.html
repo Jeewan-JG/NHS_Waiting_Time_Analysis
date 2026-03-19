@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NHS Waiting Times Analysis</title>
-
   <style>
     :root{
       --primary:#159957;
@@ -67,10 +66,34 @@
       margin-top:0;
     }
 
+    h3{
+      color:#1f2937;
+      margin-top:28px;
+      margin-bottom:10px;
+    }
+
+    p{margin:0 0 16px;}
+    ul{padding-left:22px;}
+    li{margin-bottom:8px;}
+
+    .toc ol{
+      padding-left:32px;
+      margin:0;
+    }
+
+    .toc li{
+      margin-bottom:10px;
+      font-size:1.05rem;
+    }
+
     .toc a{
       color:var(--link);
       text-decoration:underline;
       font-weight:600;
+    }
+
+    .toc a:hover{
+      opacity:0.85;
     }
 
     img{
@@ -88,6 +111,7 @@
       padding-bottom:70%;
       border-radius:10px;
       overflow:hidden;
+      background:#f0f0f0;
     }
 
     .dashboard-wrap iframe{
@@ -98,65 +122,328 @@
       border:none;
     }
 
+    pre{
+      background:var(--code-bg);
+      color:var(--code-text);
+      padding:18px;
+      border-radius:10px;
+      overflow-x:auto;
+      font-size:0.95rem;
+      line-height:1.5;
+      margin:14px 0 22px;
+    }
+
+    code{
+      font-family:Consolas, Monaco, monospace;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+    }
+
+    th, td{
+      border:1px solid var(--border);
+      padding:12px;
+      text-align:left;
+      vertical-align:top;
+    }
+
+    th{
+      background:#f9fafb;
+    }
+
     .footer{
       text-align:center;
       color:var(--muted);
       font-size:0.95rem;
+      margin-top:8px;
+    }
+
+    @media (max-width: 768px){
+      .hero h1{font-size:2.1rem;}
+      .card{padding:22px;}
     }
   </style>
 </head>
-
 <body>
 
-  <!-- HERO -->
   <section class="hero">
     <h1>NHS Waiting Times Analysis</h1>
-    <p>Volume, Delays & Provider Performance Analysis using Python & Tableau</p>
+    <p>Volume, Delays & Provider Performance Analysis using Python and Tableau.</p>
   </section>
 
   <div class="container">
 
-    <!-- PROFILE IMAGE -->
-    <img src="pp.png" alt="Profile / Project Image">
+    <img src="pp.png" alt="Project banner image">
 
-    <!-- OVERVIEW -->
-    <section class="card">
+    <section class="card" id="overview">
       <h2>Project Overview</h2>
       <p>
-        This project analyzes NHS waiting list data to understand the scale of long waiting times,
+        This project analyses NHS waiting list data to understand the scale of long waiting times,
         identify the drivers of the 52+ week backlog, and compare provider performance.
+        The goal is to uncover actionable insights that can support capacity planning,
+        improve patient outcomes, and reduce long waiting times.
       </p>
-
+      <p>The analysis focuses on:</p>
       <ul>
         <li>Total patient volume and long-wait backlog</li>
-        <li>Percentage of patients waiting over 52 weeks</li>
+        <li>The percentage of patients waiting over 52 weeks</li>
         <li>Monthly changes in waiting performance</li>
         <li>Differences in provider performance</li>
-        <li>Relationship between volume and waiting times</li>
-        <li>Distribution of long waiting times</li>
+        <li>The relationship between patient volume and waiting times</li>
+        <li>The distribution of long waiting times across week bands</li>
       </ul>
     </section>
 
-    <!-- DASHBOARD -->
-    <section class="card">
-      <h2>📊 Dashboard</h2>
+    <section class="card toc" id="table-of-contents">
+      <h2>📑 Table of Contents</h2>
+      <ol>
+        <li><a href="#business-problem">Business Problem</a></li>
+        <li><a href="#dataset">Dataset</a></li>
+        <li><a href="#tools-used">Tools Used</a></li>
+        <li><a href="#data-cleaning">Data Cleaning in Python</a></li>
+        <li><a href="#python-analysis">Python Analysis</a></li>
+        <li><a href="#key-insights">Key Insights</a></li>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#recommendations">Business Recommendations</a></li>
+        <li><a href="#project-structure">Project Structure</a></li>
+      </ol>
+    </section>
 
+    <section class="card" id="business-problem">
+      <h2>Business Problem</h2>
       <p>
-        The analysis is visualized using Tableau dashboards combining KPIs, trends,
-        provider comparisons, and waiting time distributions.
+        NHS providers are under pressure from long patient waiting times, especially for patients
+        waiting more than 52 weeks for treatment.
+      </p>
+      <p>This project aims to answer:</p>
+      <ul>
+        <li>How severe is the 52+ week backlog?</li>
+        <li>Are waiting times improving or worsening over time?</li>
+        <li>Which providers handle the highest patient volumes?</li>
+        <li>Which providers have the highest 52+ week wait ratios?</li>
+        <li>Do higher patient volumes lead to longer waits?</li>
+      </ul>
+
+      <h3>Why this matters</h3>
+      <ul>
+        <li>Long waits can worsen patient outcomes and increase operational pressure.</li>
+        <li>High-performing and low-performing providers can be compared to identify gaps.</li>
+        <li>Leaders need clear evidence to decide where to increase capacity and focus support.</li>
+      </ul>
+    </section>
+
+    <section class="card" id="dataset">
+      <h2>📂 Dataset</h2>
+      <p>The dataset contains NHS waiting list data with fields such as:</p>
+      <ul>
+        <li><code>Provider</code></li>
+        <li><code>Period Date</code></li>
+        <li><code>Total Patients</code></li>
+        <li><code>Wait 52 Plus</code></li>
+        <li><code>Wait Ratio KPI</code></li>
+        <li><code>MoM % Change Wait 52 Plus</code></li>
+        <li><code>Gt 52 To 53 Weeks SUM 1</code> through <code>Gt 99 To 100 Weeks SUM 1</code></li>
+      </ul>
+      <p>
+        These week-band columns were especially important because they allowed the project
+        to measure the long-tail backlog and build the waiting time distribution chart.
+      </p>
+    </section>
+
+    <section class="card" id="tools-used">
+      <h2>Tools Used</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Python</td>
+            <td>Data cleaning, transformation, KPI calculations</td>
+          </tr>
+          <tr>
+            <td>Tableau</td>
+            <td>Dashboard development and data visualisation</td>
+          </tr>
+          <tr>
+            <td>GitHub Pages</td>
+            <td>Portfolio publishing</td>
+          </tr>
+          <tr>
+            <td>HTML/CSS</td>
+            <td>Project webpage design</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" id="data-cleaning">
+      <h2>Data Cleaning in Python</h2>
+      <p>
+        Python was used to prepare the data for analysis and Tableau visualisation.
+        The cleaning step focused on making the dataset analysis-ready and creating useful business metrics.
+      </p>
+      <p>This step:</p>
+      <ul>
+        <li>cleaned column names</li>
+        <li>converted the date field properly</li>
+        <li>handled missing numeric values</li>
+        <li>created a combined 52+ week waiting metric</li>
+        <li>prepared monthly and provider-level summary tables</li>
+      </ul>
+
+      <h3>Load and clean the dataset</h3>
+      <pre><code>import pandas as pd
+import numpy as np
+
+df = pd.read_csv("final_nhs_analysis.csv")
+
+clean_df = df.copy()
+clean_df.columns = [col.strip() for col in clean_df.columns]
+clean_df["Period Date"] = pd.to_datetime(clean_df["Period Date"], errors="coerce")
+
+numeric_cols = clean_df.select_dtypes(include=["number"]).columns
+clean_df[numeric_cols] = clean_df[numeric_cols].fillna(0)</code></pre>
+
+      <h3>Create the combined 52+ week metric</h3>
+      <pre><code>gt_52_cols = [
+    col for col in clean_df.columns
+    if col.startswith("Gt ") and "Weeks SUM 1" in col
+]
+
+clean_df["wait_52_plus"] = clean_df[gt_52_cols].sum(axis=1)
+clean_df["total_patients"] = clean_df["Total Patients"]</code></pre>
+    </section>
+
+    <section class="card" id="python-analysis">
+      <h2>Python Analysis</h2>
+
+      <h3>KPI calculations</h3>
+      <p>This code calculates the main KPIs used in the dashboard.</p>
+      <pre><code>total_patients_kpi = clean_df["total_patients"].sum()
+wait_52_plus_kpi = clean_df["wait_52_plus"].sum()
+wait_ratio_kpi = wait_52_plus_kpi / total_patients_kpi
+
+print("Total Patients:", f"{total_patients_kpi:,.0f}")
+print("Patients Waiting 52+ Weeks:", f"{wait_52_plus_kpi:,.0f}")
+print("Wait Ratio:", f"{wait_ratio_kpi:.2%}")</code></pre>
+
+      <h3>Monthly trend analysis</h3>
+      <pre><code>monthly_trend = (
+    clean_df.groupby(clean_df["Period Date"].dt.to_period("M"))
+    .agg(
+        total_patients=("total_patients", "sum"),
+        wait_52_plus=("wait_52_plus", "sum")
+    )
+    .reset_index()
+)
+
+monthly_trend["wait_ratio"] = (
+    monthly_trend["wait_52_plus"] / monthly_trend["total_patients"]
+)
+
+monthly_trend["Period Date"] = monthly_trend["Period Date"].astype(str)</code></pre>
+
+      <h3>Provider-level summary</h3>
+      <pre><code>provider_summary = (
+    clean_df.groupby("Provider")
+    .agg(
+        total_patients=("total_patients", "sum"),
+        wait_52_plus=("wait_52_plus", "sum")
+    )
+    .reset_index()
+)
+
+provider_summary["wait_ratio"] = (
+    provider_summary["wait_52_plus"] / provider_summary["total_patients"]
+)
+
+top_10_by_patients = provider_summary.nlargest(10, "total_patients")
+top_10_by_wait_ratio = provider_summary.nlargest(10, "wait_ratio")</code></pre>
+
+      <h3>Month-over-month change</h3>
+      <pre><code>monthly_trend["mom_change_wait_52_plus"] = (
+    monthly_trend["wait_52_plus"].pct_change()
+)
+
+monthly_trend["mom_change_wait_ratio"] = (
+    monthly_trend["wait_ratio"].pct_change()
+)</code></pre>
+    </section>
+
+    <section class="card" id="key-insights">
+      <h2>📊 Key Insights</h2>
+      <p>Based on the analysis and dashboard, several important patterns were identified.</p>
+
+      <h3>1. Backlog remains significant</h3>
+      <p>
+        Around 7.09% of patients, equal to 841,880 people, are waiting over 52 weeks.
+        This shows a major backlog that still needs focused action.
       </p>
 
+      <h3>2. Higher volume links to longer waits</h3>
+      <p>
+        The scatter plot suggests that providers with larger patient volumes tend to experience
+        longer waiting times, pointing to capacity pressure.
+      </p>
+
+      <h3>3. Provider performance is uneven</h3>
+      <p>
+        Some providers have much higher wait ratios than others, showing that performance is not consistent
+        across the system.
+      </p>
+
+      <h3>4. Progress is unstable</h3>
+      <p>
+        Monthly changes show short-term improvement followed by renewed increases,
+        meaning progress has not yet become stable.
+      </p>
+
+      <h3>5. Long-tail waiting issue</h3>
+      <p>
+        The waiting time distribution shows that while most patients are concentrated in earlier week bands,
+        a smaller group experiences very long delays, which can be especially harmful.
+      </p>
+    </section>
+
+    <section class="card" id="dashboard">
+      <h2>📈 Dashboard</h2>
+      <p>
+        The final analysis was visualized in Tableau through a dashboard that combines KPIs, trends,
+        provider comparisons, scatter analysis, and waiting time distribution.
+      </p>
+      <p>The dashboard highlights:</p>
       <ul>
-        <li>Total patients & 52+ week KPIs</li>
-        <li>Trend over time</li>
-        <li>Provider comparison</li>
-        <li>Volume vs waiting time relationship</li>
+        <li>Total patients and 52+ week waiting KPIs</li>
+        <li>Total patient trend over time</li>
+        <li>52+ week waiting trend over time</li>
+        <li>Month-over-month change in 52+ week waiting</li>
+        <li>Top 10 providers by total patients</li>
+        <li>Top 10 providers by 52+ week wait ratio</li>
+        <li>Scatter plot showing volume vs waiting time relationship</li>
+        <li>Waiting time distribution across week bands</li>
+      </ul>
+
+      <h3>Dashboard Insights</h3>
+      <p>From the visualization:</p>
+      <ul>
+        <li>The backlog remains significant across the NHS.</li>
+        <li>Higher volume providers tend to have longer waiting times.</li>
+        <li>Some providers perform much worse than others.</li>
+        <li>Recent monthly improvements have not been sustained.</li>
       </ul>
 
       <h3>Dashboard Preview</h3>
-      <img src="NHS.png" alt="NHS Dashboard">
+      <img src="NHS.png" alt="NHS Tableau Dashboard Preview">
 
       <h3>Interactive Dashboard</h3>
+      <p>Explore the full interactive Tableau dashboard below:</p>
       <div class="dashboard-wrap">
         <iframe
           src="https://public.tableau.com/views/NHSWaitingListAnalysisDemandDelaysandCapacityPressure/NHSWaitingListPerformanceDashboard52WeekAnalysis?:language=en-GB&:display_count=n&:showVizHome=n"
@@ -165,27 +452,24 @@
       </div>
     </section>
 
-    <!-- INSIGHTS -->
-    <section class="card">
-      <h2>📈 Key Insights</h2>
-
+    <section class="card" id="recommendations">
+      <h2>Business Recommendations</h2>
       <ul>
-        <li>Significant backlog across the NHS</li>
-        <li>Higher volume leads to longer waits</li>
-        <li>Large variation between providers</li>
-        <li>Recent improvements are unstable</li>
+        <li>Redistribute workload across providers to reduce pressure on high-volume organisations.</li>
+        <li>Focus support on providers with the highest wait ratios.</li>
+        <li>Improve triaging and expand digital services to manage demand better.</li>
+        <li>Monitor waiting time trends regularly and respond quickly to negative changes.</li>
+        <li>Prioritise reduction of the 52+ week backlog.</li>
       </ul>
     </section>
 
-    <!-- RECOMMENDATIONS -->
-    <section class="card">
-      <h2>Business Recommendations</h2>
-
+    <section class="card" id="project-structure">
+      <h2>Project Structure</h2>
       <ul>
-        <li>Redistribute workload across providers</li>
-        <li>Focus on high wait-ratio providers</li>
-        <li>Improve triage and digital services</li>
-        <li>Prioritise 52+ week backlog reduction</li>
+        <li><strong>README.md</strong> – repository overview</li>
+        <li><strong>index.html</strong> – GitHub Pages portfolio webpage</li>
+        <li><strong>NHS.png</strong> – dashboard preview image</li>
+        <li><strong>pp.png</strong> – project image/banner</li>
       </ul>
     </section>
 
@@ -194,6 +478,5 @@
     </div>
 
   </div>
-
 </body>
 </html>
