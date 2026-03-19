@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <title>NHS Waiting Times Analysis | Delays, Demand & Capacity Insights</title>
+  <title>NHS Waiting Times Analysis | Delays, Demand & Capacity Insights</title>
+
   <style>
     :root{
       --primary:#159957;
@@ -18,8 +19,13 @@
       --link:#2563eb;
     }
 
-    *{box-sizing:border-box;}
-    html{scroll-behavior:smooth;}
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
 
     body{
       margin:0;
@@ -32,19 +38,45 @@
     .hero{
       background:linear-gradient(120deg, var(--primary-dark), var(--primary));
       color:#fff;
-      text-align:center;
-      padding:80px 20px;
+      padding:70px 20px;
     }
 
-    .hero h1{
-      margin:0 0 16px;
-      font-size:2.8rem;
-    }
-
-    .hero p{
-      max-width:900px;
+    .hero-content{
+      max-width:1100px;
       margin:0 auto;
-      font-size:1.15rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:28px;
+      flex-wrap:wrap;
+    }
+
+    .profile-pic{
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
+      box-shadow:0 6px 18px rgba(0,0,0,0.22);
+      border:3px solid rgba(255,255,255,0.25);
+      flex-shrink:0;
+    }
+
+    .hero-text{
+      text-align:left;
+      max-width:760px;
+    }
+
+    .hero-text h1{
+      margin:0 0 10px;
+      font-size:2.6rem;
+      line-height:1.2;
+    }
+
+    .hero-text p{
+      margin:0;
+      font-size:1.1rem;
+      opacity:0.95;
     }
 
     .container{
@@ -72,9 +104,17 @@
       margin-bottom:10px;
     }
 
-    p{margin:0 0 16px;}
-    ul{padding-left:22px;}
-    li{margin-bottom:8px;}
+    p{
+      margin:0 0 16px;
+    }
+
+    ul{
+      padding-left:22px;
+    }
+
+    li{
+      margin-bottom:8px;
+    }
 
     .toc ol{
       padding-left:32px;
@@ -162,29 +202,52 @@
     }
 
     @media (max-width: 768px){
-      .hero h1{font-size:2.1rem;}
-      .card{padding:22px;}
+      .hero{
+        padding:55px 20px;
+      }
+
+      .hero-content{
+        flex-direction:column;
+        text-align:center;
+      }
+
+      .hero-text{
+        text-align:center;
+      }
+
+      .hero-text h1{
+        font-size:2rem;
+      }
+
+      .hero-text p{
+        font-size:1rem;
+      }
+
+      .profile-pic{
+        width:100px;
+        height:100px;
+      }
+
+      .card{
+        padding:22px;
+      }
     }
   </style>
 </head>
 <body>
 
- <section class="hero">
-  <div class="hero-content">
-    
-    <img src="pp.png" alt="Profile Picture" class="profile-pic">
+  <section class="hero">
+    <div class="hero-content">
+      <img src="pp.png" alt="Jeewan Gurung profile picture" class="profile-pic">
 
-    <div class="hero-text">
-      <h1>NHS Waiting Times Analysis | Delays, Demand & Capacity Insights</h1>
-      <p>Tools used: Excel • Python • Tableau</p>
+      <div class="hero-text">
+        <h1>NHS Waiting Times Analysis | Delays, Demand & Capacity Insights</h1>
+        <p>Tools used: Excel • Python • Tableau</p>
+      </div>
     </div>
-
-  </div>
-</section>
+  </section>
 
   <div class="container">
-
-    <img src="pp.png" alt="Project banner image">
 
     <section class="card" id="overview">
       <h2>Project Overview</h2>
@@ -291,16 +354,16 @@
       </table>
     </section>
 
-   <section class="card" id="data-cleaning">
-  <h2>Data Cleaning in Python</h2>
-  <p>
-    Python was used to combine multiple monthly NHS files, clean the raw dataset,
-    handle duplicates and missing values, convert numeric fields, and create the
-    key 52+ week waiting metric used throughout the dashboard.
-  </p>
+    <section class="card" id="data-cleaning">
+      <h2>Data Cleaning in Python</h2>
+      <p>
+        Python was used to combine multiple monthly NHS files, clean the raw dataset,
+        handle duplicates and missing values, convert numeric fields, and create the
+        key 52+ week waiting metric used throughout the dashboard.
+      </p>
 
-  <h3>1. Load a single file and inspect the raw structure</h3>
-  <pre><code>import pandas as pd
+      <h3>1. Load a single file and inspect the raw structure</h3>
+      <pre><code>import pandas as pd
 
 file_path = "/Users/jeewangurung/Downloads/NHS_case_study/20250331-RTT-March-2025-full-extract-revised.csv"
 df = pd.read_csv(file_path)
@@ -309,8 +372,8 @@ df.head()
 df.shape
 df.columns</code></pre>
 
-  <h3>2. Combine all monthly CSV files into one dataset</h3>
-  <pre><code>import os
+      <h3>2. Combine all monthly CSV files into one dataset</h3>
+      <pre><code>import os
 
 folder = "/Users/jeewangurung/Downloads/NHS_case_study"
 
@@ -322,22 +385,22 @@ combined_df = pd.concat(df_list, ignore_index=True)
 combined_df.shape
 combined_df.to_csv("/Users/jeewangurung/Downloads/nhs_combined_4months.csv", index=False)</code></pre>
 
-  <h3>3. Create a safe working copy and remove duplicates</h3>
-  <pre><code>clean_df = combined_df.copy()
+      <h3>3. Create a safe working copy and remove duplicates</h3>
+      <pre><code>clean_df = combined_df.copy()
 
 clean_df.duplicated().sum()
 clean_df = clean_df.drop_duplicates()</code></pre>
 
-  <h3>4. Check missing values and convert numeric columns</h3>
-  <pre><code>clean_df.isna().sum().sort_values(ascending=False).head(15)
+      <h3>4. Check missing values and convert numeric columns</h3>
+      <pre><code>clean_df.isna().sum().sort_values(ascending=False).head(15)
 
 numeric_cols = [col for col in clean_df.columns if "SUM" in col or col == "Total"]
 
 for col in numeric_cols:
     clean_df[col] = pd.to_numeric(clean_df[col], errors="coerce")</code></pre>
 
-  <h3>5. Remove invalid rows and keep only useful columns</h3>
-  <pre><code>clean_df = clean_df.dropna(subset=[
+      <h3>5. Remove invalid rows and keep only useful columns</h3>
+      <pre><code>clean_df = clean_df.dropna(subset=[
     "Period",
     "Provider Org Name",
     "RTT Part Type",
@@ -359,8 +422,8 @@ waiting_cols = [col for col in clean_df.columns if "Gt " in col and "Weeks SUM 1
 
 clean_df = clean_df[columns_to_keep + waiting_cols].copy()</code></pre>
 
-  <h3>6. Rename columns for easier analysis</h3>
-  <pre><code>clean_df = clean_df.rename(columns={
+      <h3>6. Rename columns for easier analysis</h3>
+      <pre><code>clean_df = clean_df.rename(columns={
     "Period": "period",
     "Provider Org Name": "provider",
     "Commissioner Org Name": "commissioner",
@@ -369,12 +432,12 @@ clean_df = clean_df[columns_to_keep + waiting_cols].copy()</code></pre>
     "Patients with unknown clock start date": "unknown_clock"
 })</code></pre>
 
-  <h3>7. Fill missing waiting-time values with zero</h3>
-  <pre><code>waiting_cols = [col for col in clean_df.columns if "Gt " in col]
+      <h3>7. Fill missing waiting-time values with zero</h3>
+      <pre><code>waiting_cols = [col for col in clean_df.columns if "Gt " in col]
 clean_df[waiting_cols] = clean_df[waiting_cols].fillna(0)</code></pre>
 
-  <h3>8. Select only columns for patients waiting 52+ weeks</h3>
-  <pre><code>long_wait_cols = [
+      <h3>8. Select only columns for patients waiting 52+ weeks</h3>
+      <pre><code>long_wait_cols = [
     col for col in clean_df.columns
     if "Weeks" in col
     and col.startswith("Gt ")
@@ -383,49 +446,49 @@ clean_df[waiting_cols] = clean_df[waiting_cols].fillna(0)</code></pre>
 
 long_wait_cols[:10]</code></pre>
 
-  <h3>9. Create the main 52+ week waiting metric</h3>
-  <pre><code>clean_df["wait_52_plus"] = clean_df[long_wait_cols].sum(axis=1)
+      <h3>9. Create the main 52+ week waiting metric</h3>
+      <pre><code>clean_df["wait_52_plus"] = clean_df[long_wait_cols].sum(axis=1)
 
 clean_df[["period", "total_patients", "wait_52_plus"]].head()</code></pre>
 
-  <h3>10. Save the cleaned dataset for Tableau</h3>
-  <pre><code>clean_df.to_csv("/Users/jeewangurung/Downloads/final_nhs_analysis.csv", index=False)</code></pre>
-</section>
+      <h3>10. Save the cleaned dataset for Tableau</h3>
+      <pre><code>clean_df.to_csv("/Users/jeewangurung/Downloads/final_nhs_analysis.csv", index=False)</code></pre>
+    </section>
 
-<section class="card" id="python-analysis">
-  <h2>Python Analysis</h2>
-  <p>
-    After cleaning, Python was also used to calculate the main KPIs, build monthly trends,
-    compare providers, and identify high-impact organisations with both high backlog size
-    and high wait ratios.
-  </p>
+    <section class="card" id="python-analysis">
+      <h2>Python Analysis</h2>
+      <p>
+        After cleaning, Python was also used to calculate the main KPIs, build monthly trends,
+        compare providers, and identify high-impact organisations with both high backlog size
+        and high wait ratios.
+      </p>
 
-  <h3>1. Calculate the overall percentage waiting over 52 weeks</h3>
-  <pre><code>total_patients_all = clean_df["total_patients"].sum()
+      <h3>1. Calculate the overall percentage waiting over 52 weeks</h3>
+      <pre><code>total_patients_all = clean_df["total_patients"].sum()
 total_long_wait = clean_df["wait_52_plus"].sum()
 
 percentage_long_wait = (total_long_wait / total_patients_all) * 100
 
 print(f"Percentage of patients waiting over 52 weeks: {percentage_long_wait:.2f}%")</code></pre>
 
-  <h3>2. Total patient trend by month</h3>
-  <pre><code>trend = clean_df.groupby("period")["total_patients"].sum()
+      <h3>2. Total patient trend by month</h3>
+      <pre><code>trend = clean_df.groupby("period")["total_patients"].sum()
 trend</code></pre>
 
-  <h3>3. 52+ week waiting trend by month</h3>
-  <pre><code>long_wait_trend = clean_df.groupby("period")["wait_52_plus"].sum().reset_index()
+      <h3>3. 52+ week waiting trend by month</h3>
+      <pre><code>long_wait_trend = clean_df.groupby("period")["wait_52_plus"].sum().reset_index()
 long_wait_trend</code></pre>
 
-  <h3>4. Total patients per provider</h3>
-  <pre><code>provider_totals = clean_df.groupby("provider")["total_patients"].sum().reset_index()
+      <h3>4. Total patients per provider</h3>
+      <pre><code>provider_totals = clean_df.groupby("provider")["total_patients"].sum().reset_index()
 provider_totals.head()</code></pre>
 
-  <h3>5. Total long waits per provider</h3>
-  <pre><code>provider_long_waits = clean_df.groupby("provider")["wait_52_plus"].sum().reset_index()
+      <h3>5. Total long waits per provider</h3>
+      <pre><code>provider_long_waits = clean_df.groupby("provider")["wait_52_plus"].sum().reset_index()
 provider_long_waits.head()</code></pre>
 
-  <h3>6. Build provider analysis table with wait ratio</h3>
-  <pre><code>provider_analysis = provider_totals.merge(provider_long_waits, on="provider")
+      <h3>6. Build provider analysis table with wait ratio</h3>
+      <pre><code>provider_analysis = provider_totals.merge(provider_long_waits, on="provider")
 
 provider_analysis["wait_ratio"] = (
     provider_analysis["wait_52_plus"] / provider_analysis["total_patients"]
@@ -433,25 +496,26 @@ provider_analysis["wait_ratio"] = (
 
 provider_analysis.head()</code></pre>
 
-  <h3>7. Identify the worst providers by wait ratio</h3>
-  <pre><code>worst_providers = provider_analysis.sort_values(by="wait_ratio", ascending=False)
+      <h3>7. Identify the worst providers by wait ratio</h3>
+      <pre><code>worst_providers = provider_analysis.sort_values(by="wait_ratio", ascending=False)
 worst_providers.head(10)</code></pre>
 
-  <h3>8. Focus on providers with real operational impact</h3>
-  <pre><code>worst_providers_real_impact = worst_providers[
+      <h3>8. Focus on providers with real operational impact</h3>
+      <pre><code>worst_providers_real_impact = worst_providers[
     worst_providers["wait_52_plus"] > 1000
 ]
 
 worst_providers_real_impact.head(10)</code></pre>
 
-  <h3>9. Filter providers with both high volume and high wait ratio</h3>
-  <pre><code>filtered_providers = worst_providers[
+      <h3>9. Filter providers with both high volume and high wait ratio</h3>
+      <pre><code>filtered_providers = worst_providers[
     (worst_providers["wait_52_plus"] > 1000) &
     (worst_providers["wait_ratio"] > 0.1)
 ]
 
 filtered_providers.head(10)</code></pre>
-</section>
+    </section>
+
     <section class="card" id="key-insights">
       <h2>📊 Key Insights</h2>
       <p>Based on the analysis and dashboard, several important patterns were identified.</p>
@@ -544,7 +608,7 @@ filtered_providers.head(10)</code></pre>
         <li><strong>README.md</strong> – repository overview</li>
         <li><strong>index.html</strong> – GitHub Pages portfolio webpage</li>
         <li><strong>NHS.png</strong> – dashboard preview image</li>
-        <li><strong>pp.png</strong> – project image/banner</li>
+        <li><strong>pp.png</strong> – profile picture</li>
       </ul>
     </section>
 
