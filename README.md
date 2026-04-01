@@ -216,24 +216,23 @@ A small group of patients experiences very long delays.
 
 ---
 
-## 📈 Dashboard
 
-The final analysis was visualised in Tableau.
-
-### Dashboard includes:
+## Dashboard includes:
 
 - Total patients and 52+ week KPIs  
 - Monthly trends  
 - Provider comparisons  
 - Volume vs waiting time scatter plot  
 - Waiting time distribution  
+### Dashboard Preview
 
+![Tableau Dashboard](NHS.png)
 ---
 
 ## 🌐 Live Dashboard
 
-👉 https://jeewan-jg.github.io/NHS_Waiting_Time_Analysis/
 
+[View the Interactive Dashboard](https://public.tableau.com/views/NHSWaitingListAnalysisDemandDelaysandCapacityPressure/NHSWaitingListPerformanceDashboard52WeekAnalysis?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 ---
 
 ## 🧠 Skills Demonstrated
