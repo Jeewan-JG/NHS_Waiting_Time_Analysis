@@ -1,7 +1,7 @@
 # Case Study: NHS Waiting Times Analysis | Delays, Demand & Capacity Insights
 
 
-**Tools used:** Excel, BigQuery SQL, and Tableau.
+**Tools used:** Excel--Python--Tableau.
 
 ![Data Pipeline](pp.png)
 
