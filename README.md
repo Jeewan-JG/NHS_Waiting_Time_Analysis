@@ -5,7 +5,7 @@
 
 ![Data Pipeline](pp.png)
 
-## 📊 Project Overview
+## Project Overview
 This project analyses NHS waiting list data to understand the scale of long waiting times, identify the drivers of the **52+ week backlog**, and compare provider performance.
 
 The goal is to uncover actionable insights that can support capacity planning, improve patient outcomes, and reduce long waiting times.
@@ -21,7 +21,7 @@ The analysis focuses on:
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
 1. [Business Problem](#business-problem)
 2. [Dataset](#dataset)
@@ -33,7 +33,7 @@ The analysis focuses on:
 
 ---
 
-## 🎯 Business Problem
+## Business Problem
 
 NHS providers are under pressure from long patient waiting times, especially for patients waiting more than **52 weeks** for treatment.
 
@@ -53,7 +53,7 @@ This project aims to answer:
 
 ---
 
-## 📂 Dataset
+## Dataset
 
 The dataset contains NHS waiting list data with fields such as:
 
@@ -69,7 +69,7 @@ These week-band columns were especially important because they allow analysis of
 
 ---
 
-## 🛠️ Tools Used
+## Tools Used
 
 | Tool | Purpose |
 |------|--------|
@@ -161,7 +161,7 @@ clean_df["wait_52_plus"] = clean_df[long_wait_cols].sum(axis=1)
 
 ---
 
-## 🔍 Python Analysis
+## Python Analysis
 
 ### Percentage Waiting Over 52 Weeks
 
@@ -197,7 +197,7 @@ provider_analysis["wait_ratio"] = (
 
 ---
 
-## 📊 Key Insights
+## Key Insights
 
 ### 1. Backlog remains significant
 Around **7.09% of patients (841,880 people)** are waiting over 52 weeks.
@@ -229,19 +229,19 @@ A small group of patients experiences very long delays.
 ![Tableau Dashboard](NHS.png)
 ---
 
-## 🌐 Live Dashboard
+## Live Dashboard
 
 
 [View the Interactive Dashboard](https://public.tableau.com/views/NHSWaitingListAnalysisDemandDelaysandCapacityPressure/NHSWaitingListPerformanceDashboard52WeekAnalysis?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 ---
 
-## 🧠 Skills Demonstrated
+## Skills Demonstrated
 
 Python | Data Cleaning | Data Analysis | KPI Development | Data Visualisation | Tableau | Problem Solving  
 
 ---
 
-## 👤 Author
+## Author
 
 Jeewan Gurung  
 LinkedIn: https://www.linkedin.com/in/jg936  
